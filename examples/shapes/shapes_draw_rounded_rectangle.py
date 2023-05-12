@@ -70,13 +70,19 @@ while not pyray.window_should_close():  #// Detect window close button or ESC ke
     roundness = pyray.gui_slider_bar(pyray.Rectangle(640,140,105,20),"Roundness",0,roundness,0,1)
     lineThick = int( pyray.gui_slider_bar(pyray.Rectangle(640,170,105,20),"Thickness",0,lineThick,0,20) )
     segments = int( pyray.gui_slider_bar(pyray.Rectangle(640,240,105,20),"Segments",0,segments,0,60) )
-    
+
     drawRoundedRect = pyray.gui_check_box(pyray.Rectangle(640,320,20,20),"DrawRoundedRect",drawRoundedRect)
     drawRoundedLines = pyray.gui_check_box(pyray.Rectangle(640,350,20,20),"DrawRoundedLines",drawRoundedLines)
     drawRect = pyray.gui_check_box(pyray.Rectangle(640,380,20,20),"DrawRect",drawRect)
     #//------------------------------------------------------------------------------
 
-    pyray.draw_text(pyray.text_format( "MODE: %s" % "MANUAL" if segments >= 4 else "AUTO" ), 640, 280, 10, MAROON if segments >= 4 else DARKGRAY )
+    pyray.draw_text(
+        pyray.text_format('MODE: MANUAL' if segments >= 4 else "AUTO"),
+        640,
+        280,
+        10,
+        MAROON if segments >= 4 else DARKGRAY,
+    )
     pyray.draw_fps(10,10)
     pyray.end_drawing()
     #//------------------------------------------------------------------------------

@@ -48,7 +48,11 @@ class Particle:
         self.ang = math.radians(random.randint(0, 359))
         self.spd = random.randint(4, 10)
         self.start = CTM()
-        self.clr = [255, 200, 0, 155] if BEES else [*(random.randint(55, 255) for i in range(3)), 55]
+        self.clr = (
+            [255, 200, 0, 155]
+            if BEES
+            else [*(random.randint(55, 255) for _ in range(3)), 55]
+        )
         self.mem = (0, 0)
         self.pre = glm.vec2(pos)
 
@@ -90,15 +94,15 @@ class Particle:
 dims = rl.GetScreenWidth(), rl.GetScreenHeight()
 ini = False
 parts = [
-    Particle(glm.vec2(random_point_in_circle(
-        glm.vec3(
-            rl.GetScreenWidth() / 2,
-            rl.GetScreenHeight() / 2,
-            0
-        ),
-        64
-    )))
-    for i in range(125)
+    Particle(
+        glm.vec2(
+            random_point_in_circle(
+                glm.vec3(rl.GetScreenWidth() / 2, rl.GetScreenHeight() / 2, 0),
+                64,
+            )
+        )
+    )
+    for _ in range(125)
 ]
 while not rl.WindowShouldClose():
     if (rl.GetScreenWidth(), rl.GetScreenHeight()) != dims:

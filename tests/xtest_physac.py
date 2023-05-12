@@ -48,8 +48,7 @@ while not WindowShouldClose():
 
     bodiesCount = GetPhysicsBodiesCount()
     for i in range(bodiesCount):
-        body = GetPhysicsBody(i)
-        if body:
+        if body := GetPhysicsBody(i):
             vertexCount = GetPhysicsShapeVerticesCount(i)
             for j in range(vertexCount):
                 vertexA = GetPhysicsShapeVertex(body, j)

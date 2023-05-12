@@ -2,6 +2,7 @@
 raylib [physac] example - physics demo
 """
 
+
 from pyray import Vector2
 from raylib import *
 from raylib.colors import (
@@ -65,9 +66,7 @@ while not WindowShouldClose():
     # Draw created physics bodies
     bodies_count = GetPhysicsBodiesCount()
     for i in range(bodies_count):
-        body = GetPhysicsBody(i)
-
-        if body:
+        if body := GetPhysicsBody(i):
             vertex_count = GetPhysicsShapeVerticesCount(i)
             for j in range(vertex_count):
                 # Get physics bodies shape vertices to draw lines

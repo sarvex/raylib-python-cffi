@@ -2,6 +2,7 @@
 raylib [core] example - 2d camera mouse zoom
 """
 
+
 import pyray
 
 SCREEN_WIDTH = 800
@@ -31,7 +32,7 @@ while not pyray.window_should_close():
     if wheel != 0:
 
         mouseWorldPos = pyray.get_screen_to_world_2d(pyray.get_mouse_position(), camera)
-        
+
         camera.offset = pyray.get_mouse_position()
 
         camera.target = mouseWorldPos
@@ -39,7 +40,7 @@ while not pyray.window_should_close():
         ZOOM_INCREMENT = 0.125
 
         camera.zoom += (wheel*ZOOM_INCREMENT)
-        if (camera.zoom < ZOOM_INCREMENT): camera.zoom = ZOOM_INCREMENT
+        camera.zoom = max(camera.zoom, ZOOM_INCREMENT)
 
 
     # draw
@@ -55,11 +56,11 @@ while not pyray.window_should_close():
     pyray.rl_pop_matrix()
 
     pyray.draw_circle(100, 100, 50, pyray.YELLOW)
-            
+
     pyray.end_mode_2d()
 
     pyray.draw_text("Mouse right button drag to move, mouse wheel to zoom", 10, 10, 20, pyray.WHITE);
-    
+
     pyray.end_drawing()
 
 # de-Initialization

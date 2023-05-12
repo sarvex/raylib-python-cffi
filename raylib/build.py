@@ -46,7 +46,7 @@ def get_lib_flags():
                           stdout=subprocess.PIPE).stdout.strip().split()
 
 def pre_process_header(filename, remove_function_bodies=False):
-    print("Pre-processing " + filename)
+    print(f"Pre-processing {filename}")
     file = open(filename, "r")
     filetext = "".join([line for line in file if '#include' not in line])
     command = ['gcc', '-CC', '-P', '-undef', '-nostdinc', '-DRL_MATRIX_TYPE',
@@ -58,7 +58,7 @@ def pre_process_header(filename, remove_function_bodies=False):
     if remove_function_bodies:
         filetext = re.sub('\n{\n(.|\n)*?\n}\n', ';', filetext)
     filetext = "\n".join([line for line in filetext.splitlines() if not line.startswith("#")])
-    file = open("raylib/"+os.path.basename(filename)+".modified", "w")
+    file = open(f"raylib/{os.path.basename(filename)}.modified", "w")
     file.write(filetext)
     # print(r)
     return filetext
@@ -106,18 +106,18 @@ def build_unix():
     if not check_raylib_installed():
         raise Exception("ERROR: raylib not found by pkg-config.  Please install pkg-config and Raylib.")
 
-    raylib_h = get_the_include_path() + "/raylib.h"
-    rlgl_h = get_the_include_path() + "/rlgl.h"
-    raymath_h = get_the_include_path() + "/raymath.h"
+    raylib_h = f"{get_the_include_path()}/raylib.h"
+    rlgl_h = f"{get_the_include_path()}/rlgl.h"
+    raymath_h = f"{get_the_include_path()}/raymath.h"
 
     if not os.path.isfile(raylib_h):
-        raise Exception("ERROR: " + raylib_h + " not found.  Please install Raylib.")
+        raise Exception(f"ERROR: {raylib_h} not found.  Please install Raylib.")
 
     if not os.path.isfile(rlgl_h):
-        raise Exception("ERROR: " + rlgl_h + " not found.  Please install Raylib.")
+        raise Exception(f"ERROR: {rlgl_h} not found.  Please install Raylib.")
 
     if not os.path.isfile(raymath_h):
-        raise Exception("ERROR: " + raylib_h + " not found.  Please install Raylib.")
+        raise Exception(f"ERROR: {raylib_h} not found.  Please install Raylib.")
 
     ffi_includes = """
     #include "raylib.h"
@@ -125,7 +125,7 @@ def build_unix():
     #include "raymath.h"
     """
 
-    raygui_h = get_the_include_path() + "/raygui.h"
+    raygui_h = f"{get_the_include_path()}/raygui.h"
     if check_header_exists(raygui_h):
         ffi_includes += """
         #define RAYGUI_IMPLEMENTATION
@@ -133,7 +133,7 @@ def build_unix():
         #include "raygui.h"
         """
 
-    physac_h = get_the_include_path() + "/physac.h"
+    physac_h = f"{get_the_include_path()}/physac.h"
     if check_header_exists(physac_h):
         ffi_includes += """
         #define PHYSAC_IMPLEMENTATION
@@ -151,9 +151,19 @@ def build_unix():
 
     if platform.system() == "Darwin":
         print("BUILDING FOR MAC")
-        extra_link_args = [get_the_lib_path() + '/libraylib.a', '-framework', 'OpenGL', '-framework', 'Cocoa',
-                           '-framework', 'IOKit', '-framework', 'CoreFoundation', '-framework',
-                           'CoreVideo']
+        extra_link_args = [
+            f'{get_the_lib_path()}/libraylib.a',
+            '-framework',
+            'OpenGL',
+            '-framework',
+            'Cocoa',
+            '-framework',
+            'IOKit',
+            '-framework',
+            'CoreFoundation',
+            '-framework',
+            'CoreVideo',
+        ]
         libraries = []
     else:  #platform.system() == "Linux":
         print("BUILDING FOR LINUX")

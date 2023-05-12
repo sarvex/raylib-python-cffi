@@ -59,7 +59,7 @@ for name, attr in getmembers(rl):
     if isbuiltin(attr) or str(type(attr)) == "<class '_cffi_backend.__FFIFunctionWrapper'>":
         json_array = [x for x in js['functions'] if x['name'] == name]
         json_object = {}
-        if len(json_array) > 0:
+        if json_array:
             json_object = json_array[0]
         sig = ""
         for i, arg in enumerate(ffi.typeof(attr).args):

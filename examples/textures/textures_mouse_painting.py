@@ -3,6 +3,7 @@
 raylib [texture] example - Mouse Painting
 
 """
+
 from pyray import *
 from raylib.colors import *
 from raylib import (
@@ -28,12 +29,10 @@ colors = [RAYWHITE, YELLOW, GOLD, ORANGE, PINK, RED, MAROON, GREEN, LIME, DARKGR
           SKYBLUE, BLUE, DARKBLUE, PURPLE, VIOLET, DARKPURPLE, BEIGE, BROWN, DARKBROWN,
           LIGHTGRAY, GRAY, DARKGRAY, BLACK]
 
-colorsRecs = []
-
-# Define colorsRecs data (for every rectangle)
-for i in range(MAX_COLORS_COUNT):
-    colorsRecs.append(Rectangle(10 + 30.0 * i + 2 * i, 10, 30, 30))
-
+colorsRecs = [
+    Rectangle(10 + 30.0 * i + 2 * i, 10, 30, 30)
+    for i in range(MAX_COLORS_COUNT)
+]
 colorSelected = 0
 colorSelectedPrev = colorSelected
 colorMouseHover = 0
@@ -86,8 +85,8 @@ while not window_should_close():  # Detect window close button or ESC key
 
     # Change brush size
     brushSize += get_mouse_wheel_move() * 5
-    if brushSize < 2: brushSize = 2
-    if brushSize > 50: brushSize = 50
+    brushSize = max(brushSize, 2)
+    brushSize = min(brushSize, 50)
 
     if is_key_pressed(KEY_C):
         # Clear render texture to clear color
@@ -123,11 +122,7 @@ while not window_should_close():  # Detect window close button or ESC key
         mouseWasPressed = False
 
     # Check mouse hover save button
-    if check_collision_point_rec(mousePos, btnSaveRec):
-        btnSaveMouseHover = True
-    else:
-        btnSaveMouseHover = False
-
+    btnSaveMouseHover = bool(check_collision_point_rec(mousePos, btnSaveRec))
     # Image saving logic
     # NOTE: Saving painted texture to a default named image
     if (btnSaveMouseHover and is_mouse_button_released(MOUSE_BUTTON_LEFT)) or is_key_pressed(KEY_S):
@@ -155,7 +150,6 @@ while not window_should_close():  # Detect window close button or ESC key
     draw_texture_rec(target.texture, Rectangle(0, 0, float(target.texture.width), float(-target.texture.height)),
                      Vector2(0, 0), WHITE)
 
-    # Draw drawing circle for reference
     if mousePos.y > 50:
         if is_mouse_button_down(MOUSE_BUTTON_RIGHT):
             draw_circle_lines(int(mousePos.x), int(mousePos.y), brushSize, GRAY)

@@ -136,15 +136,15 @@ def update_camera_center_inside_map(
 def update_camera_center_smooth_follow(
     camera, player, env_items, delta, width, height
 ):
-    min_speed = 30
     min_effect_length = 10
-    fraction_speed = 0.8
-
     camera.offset = pyray.Vector2(width / 2, height / 2)
     diff = vector2_subtract(player.position, camera.target)
     length = vector2_length(diff)
 
     if length > min_effect_length:
+        min_speed = 30
+        fraction_speed = 0.8
+
         speed = max(fraction_speed * length, min_speed)
         camera.target = vector2_add(
             camera.target, vector2_scale(diff, speed * delta / length)
@@ -156,12 +156,12 @@ def update_camera_even_out_on_landing(
 ):
     global g_evening_out, g_even_out_target
 
-    even_out_speed = 700
-
     camera.offset = pyray.Vector2(width / 2, height / 2)
     camera.target.x = player.position.x
 
     if g_evening_out:
+        even_out_speed = 700
+
         if g_even_out_target > camera.target.y:
             camera.target.y += even_out_speed * delta
 
@@ -173,14 +173,13 @@ def update_camera_even_out_on_landing(
             if camera.target.y < g_even_out_target:
                 camera.target.y = g_even_out_target
                 g_evening_out = False
-    else:
-        if (
+    elif (
             player.can_jump and
             (player.speed == 0) and
             (player.position.y != camera.target.y)
         ):
-            g_evening_out = True
-            g_even_out_target = player.position.y
+        g_evening_out = True
+        g_even_out_target = player.position.y
 
 
 def update_camera_player_bounds_push(

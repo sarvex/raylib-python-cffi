@@ -13,7 +13,7 @@ VERSION = (HERE / "version.py").read_text().split()[-1].strip("\"'")
 
 class BinaryDistribution(Distribution):
     """Distribution which always forces a binary package with platform name"""
-    def has_ext_modules(foo):
+    def has_ext_modules(self):
         return True
 
 # This call to setup() does all the work

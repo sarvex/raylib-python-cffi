@@ -17,6 +17,7 @@ Mac:
 - Cython
 """
 
+
 import sys, time
 import glm
 import pytweening as tween
@@ -49,7 +50,7 @@ target = rl.LoadRenderTexture(width, height)
 # Top-Level Window Support Only On Windows
 if sys.platform == 'win32':
 	import win32gui, win32con, pywintypes
-	
+
 	# Set window to always top without moving it
 	win32gui.SetWindowPos(
 		pywintypes.HANDLE(ffi.cast('int', rl.GetWindowHandle())),
@@ -75,11 +76,16 @@ awd = rl.LoadTextureFromImage(rl.LoadImageEx(
 # start3 = [160, 160]; end3 = [144, 144]
 # start4 = [160, 0]  ; end4 = [144, 16]
 
-start1 = [0, 0]    ; end1 = [8, 8]
-start2 = [0, 160]  ; end2 = [8, 152]
-start3 = [160, 160]; end3 = [152, 152]
-start4 = [160, 0]  ; end4 = [152, 8]
+start1 = [0, 0]
+end1 = [8, 8]
+start2 = [0, 160]
+end2 = [8, 152]
+start3 = [160, 160]
+end3 = [152, 152]
+start4 = [160, 0]
+end4 = [152, 8]
 
+trans = 255
 while not rl.WindowShouldClose():
 	frame_start_time = CTM()
 
@@ -96,33 +102,31 @@ while not rl.WindowShouldClose():
 	if rl.IsKeyReleased(rl.KEY_ENTER):
 		window_pos = glm.vec2()
 		window_vel = glm.vec2()
-	
-	if rl.CheckCollisionPointRec(list(mouse_pos), [0, 0, width, height]):
-		if rl.IsMouseButtonPressed(rl.MOUSE_LEFT_BUTTON):
-			drag = True
-			offset = mouse_pos
-		
-		trans = 255
-	else:
-		trans = 255
+
+	if rl.CheckCollisionPointRec(
+		list(mouse_pos), [0, 0, width, height]
+	) and rl.IsMouseButtonPressed(rl.MOUSE_LEFT_BUTTON):
+		drag = True
+		offset = mouse_pos
 
 	#mouse_pos += window_vel
 	window_vel *= glm.vec2(0.9, 0.9)
 
 	if glm.length(window_vel):
 		window_pos += window_vel
-	 	#rl.SetWindowPosition(int(window_pos.x), int(window_pos.y))
-
-
 	# Find which monitor the square is *currently within*
 	wposx = window_pos.x + width // 2
 	wposy = window_pos.y + height // 2
 	found = False
 	for monitor in reversed(monitors):
-		if wposx > monitor.x and wposx < monitor.x + monitor.width:
-			if wposy > monitor.y and wposy < monitor.y + monitor.height:
-				found = True
-				break
+		if (
+			wposx > monitor.x
+			and wposx < monitor.x + monitor.width
+			and wposy > monitor.y
+			and wposy < monitor.y + monitor.height
+		):
+			found = True
+			break
 
 	# If it is out of bounds, find the closest one
 	if not found:
@@ -192,7 +196,7 @@ while not rl.WindowShouldClose():
 		WHITE
 	)
 
-	for i in range(1000):
+	for _ in range(1000):
 		rl.DrawTextureEx(awd, [-32, -32], 0, 32, WHITE)
 
 	#rl.DrawFPS(0, 0)

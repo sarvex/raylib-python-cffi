@@ -27,10 +27,13 @@ while not exitWindow and not pr.window_should_close():
 
     mousePosition = pr.get_mouse_position()
 
-    if pr.is_mouse_button_pressed(pr.MouseButton.MOUSE_BUTTON_LEFT):
-        if pr.check_collision_point_rec(mousePosition,  pr.Rectangle(0, 0, screenWidth, 20)):
-            dragWindow = True
-            panOffset = mousePosition
+    if pr.is_mouse_button_pressed(
+        pr.MouseButton.MOUSE_BUTTON_LEFT
+    ) and pr.check_collision_point_rec(
+        mousePosition, pr.Rectangle(0, 0, screenWidth, 20)
+    ):
+        dragWindow = True
+        panOffset = mousePosition
 
     if dragWindow:
         windowPosition.x += (mousePosition.x - panOffset.x)

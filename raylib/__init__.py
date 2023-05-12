@@ -20,5 +20,5 @@ import cffi
 import sys
 from .version import  __version__
 
-print("RAYLIB STATIC "+__version__+" LOADED", file=sys.stderr)
+print(f"RAYLIB STATIC {__version__} LOADED", file=sys.stderr)
 

@@ -10,9 +10,9 @@ RAD2DEG = (180.0/PI)
 
 def Clamp(value: float, minv: float, maxv: float):
     #res = value < minv ? minv : value
-    res = minv if value < minv else value
+    res = max(value, minv)
     #return res > maxv ? maxv : res
-    return maxv if res > maxv else res
+    return min(res, maxv)
 
 def Lerp(start: float, end: float, amount: float):
     return start + amount*(end - start)
@@ -55,8 +55,27 @@ def MatrixRotateY(angle):
 
 
 def MatrixIdentity():
-    result = rl.ffi.new("struct Matrix *",[ 1.0, 0.0, 0.0, 0.0,0.0, 1.0, 0.0, 0.0,    0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 0.0, 1.0 ])
-    return result
+    return rl.ffi.new(
+        "struct Matrix *",
+        [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+        ],
+    )
 
 
 

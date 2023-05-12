@@ -59,7 +59,7 @@ for name, attr in getmembers(rl):
     if isbuiltin(attr) or str(type(attr)) == "<class '_cffi_backend.__FFIFunctionWrapper'>":
         json_array = [x for x in js['functions'] if x['name'] == name]
         json_object = {}
-        if len(json_array) > 0:
+        if json_array:
             json_object = json_array[0]
         sig = ""
         for i, arg in enumerate(ffi.typeof(attr).args):
@@ -101,20 +101,16 @@ for struct in ffi.list_types()[0]:
     #     json_object = json_array[0]
     if ffi.typeof(struct).kind == "struct":
         if ffi.typeof(struct).fields is None:
-            print("weird empty struct, skipping "+struct, file=sys.stderr)
+            print(f"weird empty struct, skipping {struct}", file=sys.stderr)
             continue
         print(f"class {struct}:")
-        print(f'    """ struct """')
-        sig = ""
-        for arg in ffi.typeof(struct).fields:
-            sig += ", " + arg[0]
+        print('    """ struct """')
+        sig = "".join(f", {arg[0]}" for arg in ffi.typeof(struct).fields)
         print(f"    def __init__(self{sig}):")
 
         for arg in ffi.typeof(struct).fields:
             print(f"        self.{arg[0]}={arg[0]}")
 
-    #elif ffi.typeof(struct).kind == "enum":
-    #    print(f"{struct}: int")
     else:
         print("ERROR UNKNOWN TYPE", ffi.typeof(struct), file=sys.stderr)
 

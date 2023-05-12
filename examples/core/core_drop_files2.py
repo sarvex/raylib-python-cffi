@@ -30,10 +30,10 @@ droppedFiles = []
 def get_dropped_files():
     count_pointer = pyray.ffi.new("int *", 0)
     droppedFiles_pointer = pyray.get_dropped_files(count_pointer)
-    d = []
-    for i in range(0, count_pointer[0]):
-        d.append(pyray.ffi.string(droppedFiles_pointer[i]).decode('utf-8'))
-    return d
+    return [
+        pyray.ffi.string(droppedFiles_pointer[i]).decode('utf-8')
+        for i in range(0, count_pointer[0])
+    ]
 
 
 while not pyray.window_should_close():

@@ -34,13 +34,9 @@ InitWindow(screenWidth, screenHeight, b"raylib [textures] example - bunnymark")
 # // Load bunny texture
 texBunny = LoadTexture(b"resources/wabbit_alpha.png")
 
-bunnies = []
-for i in range(0, MAX_BUNNIES):
-    bunnies.append(Bunny())
-
-bunniesCount = 0;          # Bunnies counter
-
-SetTargetFPS(60);               # Set our game to run at 60 frames-per-second
+bunnies = [Bunny() for _ in range(0, MAX_BUNNIES)]
+bunniesCount = 0
+SetTargetFPS(60)
 #//--------------------------------------------------------------------------------------
 
 #// Main game loop
@@ -49,7 +45,7 @@ while not WindowShouldClose():    #// Detect window close button or ESC key
     #//----------------------------------------------------------------------------------
     if IsMouseButtonDown(MOUSE_BUTTON_LEFT):
         #// Create more bunnies
-        for i in range(0, 100):
+        for _ in range(0, 100):
             if bunniesCount < MAX_BUNNIES:
                 bunnies[bunniesCount].position = GetMousePosition()
                 bunnies[bunniesCount].speed.x = GetRandomValue(-250, 250)/60.0
@@ -68,7 +64,11 @@ while not WindowShouldClose():    #// Detect window close button or ESC key
 
         if ((bunnies[i].position.x + texBunny.width/2) > GetScreenWidth()) or ((bunnies[i].position.x + texBunny.width/2) < 0):
             bunnies[i].speed.x *= -1
-        if ((bunnies[i].position.y + texBunny.height/2) > GetScreenHeight()) or ((bunnies[i].position.y + texBunny.height/2 - 40) < 0):
+        if (
+            bunnies[i].position.y + texBunny.height / 2
+        ) > GetScreenHeight() or bunnies[
+            i
+        ].position.y + texBunny.height / 2 < 40:
             bunnies[i].speed.y *= -1
 
     # //----------------------------------------------------------------------------------
@@ -104,8 +104,7 @@ while not WindowShouldClose():    #// Detect window close button or ESC key
 #//--------------------------------------------------------------------------------------
 
 
-UnloadTexture(texBunny);   #Unload bunny texture
-
+UnloadTexture(texBunny)
 CloseWindow()              # Close window and OpenGL context
 #//--------------------------------------------------------------------------------------
 

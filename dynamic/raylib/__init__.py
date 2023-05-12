@@ -33,7 +33,8 @@ def raylib_library_path():
     then the library will be loaded from the system library paths.
     '''
     def so_path():
-        return str(MODULE) if not 'USE_EXTERNAL_RAYLIB' in os.environ else ''
+        return str(MODULE) if 'USE_EXTERNAL_RAYLIB' not in os.environ else ''
+
     def so_name():
         '''Returns the appropriate for the library on the current platform.'''
         lib_filenames = {
@@ -54,7 +55,7 @@ ffi.cdef(open(MODULE / "raylib_modified.h").read().replace('RLAPI ', ''))
 try:
     raylib_fname = raylib_library_path()
     rl = ffi.dlopen(raylib_fname)
-    print('LOADED DYNAMICALLY SHARED LIB {} {}'.format(__version__, raylib_fname))
+    print(f'LOADED DYNAMICALLY SHARED LIB {__version__} {raylib_fname}')
 except Exception as e:
     print(e)
 

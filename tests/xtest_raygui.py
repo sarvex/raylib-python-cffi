@@ -24,10 +24,11 @@ while not exitWindow and not WindowShouldClose():
 
     mousePosition = GetMousePosition()
 
-    if IsMouseButtonPressed(MOUSE_BUTTON_LEFT):
-        if CheckCollisionPointRec(mousePosition,  pr.Rectangle(0, 0, screenWidth, 20) ):
-            dragWindow = True
-            panOffset = mousePosition
+    if IsMouseButtonPressed(MOUSE_BUTTON_LEFT) and CheckCollisionPointRec(
+        mousePosition, pr.Rectangle(0, 0, screenWidth, 20)
+    ):
+        dragWindow = True
+        panOffset = mousePosition
 
 
 

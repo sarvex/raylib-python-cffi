@@ -3,6 +3,7 @@
 raylib [core] example - 2d camera
 
 """
+
 import pyray
 
 from raylib.colors import (
@@ -31,7 +32,7 @@ buildings = []
 build_colors = []
 spacing = 0
 
-for i in range(MAX_BUILDINGS):
+for _ in range(MAX_BUILDINGS):
     width = pyray.get_random_value(50, 200)
     height = pyray.get_random_value(100, 800)
     y = SCREEN_HEIGHT - 130 - height

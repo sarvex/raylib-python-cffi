@@ -80,11 +80,7 @@ while not WindowShouldClose():  # Detect window close button or ESC key
                                enemySpherePos, enemySphereSize):
         collision = True
 
-    if collision:
-        playerColor = RED
-    else:
-        playerColor = GREEN
-
+    playerColor = RED if collision else GREEN
     # ----------------------------------------------------------------------------------
 
     # Draw
